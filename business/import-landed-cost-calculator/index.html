@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Import Landed Cost Calculator (US Customs) | Business &amp; IT Calculators</title>
+<meta name="description" content="Estimate the landed cost of goods imported into the U.S.: product value, freight, insurance, duty, Merchandise Processing Fee and Harbor Maintenance Fee. CBP fee rates with date checked.">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header class="site-head"><div class="wrap">
+  <a class="site-name" href="../../">Business &amp; IT Calculators</a>
+  <nav><a href="../../">Home</a><a href="../../about/">About</a></nav>
+</div></header>
+
+<main class="wrap">
+  <p class="crumb">Business</p>
+  <h1>Import Landed Cost Calculator</h1>
+  <p class="lede">Estimate what imported goods really cost once they reach you: the product, shipping, insurance, U.S. duty and customs fees. You enter the duty rate for your product; the customs fees are filled in from CBP's published rates.</p>
+
+  <form class="calc" id="f" novalidate>
+    <div class="fields">
+      <div class="field"><label for="goods">Value of goods ($)</label><input id="goods" inputmode="decimal" value="50000"><span class="hint">Customs value, usually the price paid for the goods</span></div>
+      <div class="field"><label for="units">Number of units (optional)</label><input id="units" inputmode="numeric" value="1000"></div>
+      <div class="field"><label for="freight">International freight ($)</label><input id="freight" inputmode="decimal" value="3000"></div>
+      <div class="field"><label for="ins">Insurance ($)</label><input id="ins" inputmode="decimal" value="150"></div>
+      <div class="field"><label for="duty">Duty rate (%)</label><input id="duty" inputmode="decimal" value="2.5"><span class="hint">Look up your HTS code at <a href="https://hts.usitc.gov/" rel="noopener">hts.usitc.gov</a></span></div>
+      <div class="field"><label for="extra">Additional duties (%)</label><input id="extra" inputmode="decimal" value="0"><span class="hint">Any extra tariffs that apply to your product and origin</span></div>
+      <div class="field"><label for="mode">Shipped by</label><select id="mode"><option value="ocean" selected>Ocean (vessel)</option><option value="air">Air or other</option></select></div>
+      <div class="field"><label for="entry">Entry type</label><select id="entry"><option value="formal" selected>Formal entry</option><option value="none">No MPF</option></select></div>
+      <div class="field"><label for="broker">Customs broker fee ($)</label><input id="broker" inputmode="decimal" value="250"></div>
+      <div class="field"><label for="otherf">Other fees ($)</label><input id="otherf" inputmode="decimal" value="0"><span class="hint">Port, trucking, bond, ISF and so on</span></div>
+    </div>
+    <div class="result" aria-live="polite">
+      <div class="main">Estimated landed cost<span class="big" id="r-total">—</span></div>
+      <dl>
+        <dt>Per unit</dt><dd id="r-unit">—</dd>
+        <dt>Duty</dt><dd id="r-duty">—</dd>
+        <dt>Additional duties</dt><dd id="r-extra">—</dd>
+        <dt>Merchandise Processing Fee (MPF)</dt><dd id="r-mpf">—</dd>
+        <dt>Harbor Maintenance Fee (HMF)</dt><dd id="r-hmf">—</dd>
+        <dt>Cost above goods value</dt><dd id="r-over">—</dd>
+      </dl>
+      <div class="error" id="err" hidden></div>
+    </div>
+  </form>
+  <p class="note">This is an estimate. Duty rates depend on the exact HTS classification and country of origin, and extra tariffs can change at short notice. Your customs broker's entry is the final word.</p>
+
+  <h2>Customs fees used</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Fee</th><th>Rate</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>Merchandise Processing Fee, formal entries</td><td>0.3464% of value, minimum $34.58, maximum $670.86</td><td><a href="https://www.cbp.gov/trade/basic-import-export/user-fee-table" rel="noopener">CBP user fee table</a></td></tr>
+      <tr><td>Harbor Maintenance Fee, imports by vessel</td><td>0.125% of value</td><td><a href="https://www.cbp.gov/trade/basic-import-export/user-fee-table" rel="noopener">CBP user fee table</a></td></tr>
+    </tbody>
+  </table></div>
+  <p>Checked October 23, 2026. CBP adjusts the MPF minimum and maximum each fiscal year.</p>
+
+  <h2>How it works</h2>
+  <div class="formula">duty       = goods value × duty rate
+extra duty = goods value × additional rate
+MPF        = goods value × 0.3464%, kept between $34.58 and $670.86
+HMF        = goods value × 0.125% (ocean only)
+landed     = goods + freight + insurance + duty + extra + MPF + HMF + broker + other</div>
+  <p>The U.S. generally charges duty on the value of the goods, not on the international freight and insurance. Freight and insurance still count in your landed cost because you pay them.</p>
+
+  <h2>Examples</h2>
+  <h3>$50,000 of goods by ocean, 2.5% duty</h3>
+  <p>Duty $1,250 + MPF $173.20 + HMF $62.50 + freight $3,000 + insurance $150 + broker $250. Landed cost = <strong>$54,885.70</strong>, or $54.89 per unit for 1,000 units.</p>
+  <h3>$5,000 of goods by air, duty free</h3>
+  <p>0.3464% of $5,000 is $17.32, below the minimum, so MPF is <strong>$34.58</strong>. No HMF for air shipments.</p>
+
+  <h2>FAQ</h2>
+  <h3>How do I find the duty rate?</h3>
+  <p>Find your product's HTS code in the Harmonized Tariff Schedule at hts.usitc.gov, or ask your customs broker. The general rate is in the "General" column; extra tariffs may apply depending on the country of origin.</p>
+  <h3>Is there a U.S. VAT on imports?</h3>
+  <p>There is no federal VAT. Sales tax may apply later when goods are sold to the final customer, depending on the state.</p>
+  <h3>Do small shipments pay these fees?</h3>
+  <p>Low-value and informal entries follow different rules and fees. Check CBP's current guidance for your shipment.</p>
+
+  <section class="related">
+    <h2>Related calculators</h2>
+    <ul class="card-list">
+      <li><a href="../ocean-freight-cbm-calculator/"><strong>Ocean Freight CBM Calculator</strong><span>Work out chargeable volume for the freight quote.</span></a></li>
+      <li><a href="../margin-markup-calculator/"><strong>Margin vs Markup Calculator</strong><span>Price the goods from your landed cost.</span></a></li>
+      <li><a href="../nj-nyc-sales-tax-calculator/"><strong>NJ / NYC Sales Tax Calculator</strong><span>Sales tax when you sell the goods.</span></a></li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <p>This site is operated personally by Steve Kim.</p>
+  <p>For estimation only. Not tax, legal or financial advice. Rates last checked: October 23, 2026.</p>
+  <p><a href="../../about/">About</a> · <a href="../../privacy/">Privacy</a></p>
+</div></footer>
+
+<script src="../../assets/common.js"></script>
+<script src="../../js/rates.js"></script>
+<script src="../../js/calc.js"></script>
+<script>
+UI.bind('f', function () {
+  var err = document.getElementById('err');
+  try {
+    var goods = UI.num('goods');
+    var r = Calc.landedCost({
+      goods: goods, freight: UI.num('freight') || 0, insurance: UI.num('ins') || 0,
+      dutyPct: UI.num('duty') || 0, extraDutyPct: UI.num('extra') || 0, brokerFee: UI.num('broker') || 0, otherFees: UI.num('otherf') || 0,
+      formalEntry: document.getElementById('entry').value === 'formal', ocean: document.getElementById('mode').value === 'ocean', units: UI.num('units') || 0,
+      mpfPct: RATES.mpf_rate, mpfMin: RATES.mpf_min, mpfMax: RATES.mpf_max, hmfPct: RATES.hmf_rate
+    });
+    err.hidden = true;
+    UI.setText('r-total', UI.money(r.total));
+    UI.setText('r-unit', isFinite(r.perUnit) ? UI.money(r.perUnit) : '—');
+    UI.setText('r-duty', UI.money(r.duty));
+    UI.setText('r-extra', UI.money(r.extraDuty));
+    UI.setText('r-mpf', UI.money(r.mpf));
+    UI.setText('r-hmf', UI.money(r.hmf));
+    UI.setText('r-over', UI.money(r.total - goods) + ' (' + UI.fmt(r.overGoodsPct, 1) + '%)');
+  } catch (e) {
+    err.textContent = e.message; err.hidden = false;
+    ['r-total', 'r-unit', 'r-duty', 'r-extra', 'r-mpf', 'r-hmf', 'r-over'].forEach(function (id) { UI.setText(id, '—'); });
+  }
+});
+</script>
+</body>
+</html>

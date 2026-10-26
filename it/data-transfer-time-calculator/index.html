@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Transfer Time Calculator | Business &amp; IT Calculators</title>
+<meta name="description" content="How long will it take to transfer data over your connection? Enter size and speed in Mbps; see the ideal time and a realistic estimate. Shows TB vs TiB.">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header class="site-head"><div class="wrap">
+  <a class="site-name" href="../../">Business &amp; IT Calculators</a>
+  <nav><a href="../../">Home</a><a href="../../about/">About</a></nav>
+</div></header>
+
+<main class="wrap">
+  <p class="crumb">IT planning</p>
+  <h1>Data Transfer Time Calculator</h1>
+  <p class="lede">Work out how long a backup upload, server migration or file copy will take over your internet or network connection.</p>
+
+  <form class="calc" id="f" novalidate>
+    <div class="fields">
+      <div class="field"><label for="size">Data size</label>
+        <div class="inline"><input id="size" inputmode="decimal" value="2" aria-describedby="size-h">
+          <select id="unit" aria-label="Size unit"><option>GB</option><option selected>TB</option><option>GiB</option><option>TiB</option></select></div>
+        <span class="hint" id="size-h">TB = 10¹² bytes (drive labels). TiB = 2⁴⁰ bytes (Windows "TB")</span></div>
+      <div class="field"><label for="speed">Connection speed</label>
+        <div class="inline"><input id="speed" inputmode="decimal" value="100">
+          <select id="sunit" aria-label="Speed unit"><option selected>Mbps</option><option>Gbps</option></select></div>
+        <span class="hint">Use the upload speed if you are sending data out</span></div>
+      <div class="field"><label for="eff">Real-world efficiency (%)</label><input id="eff" inputmode="decimal" value="80"><span class="hint">Protocol overhead and other traffic. 70–90% is typical</span></div>
+    </div>
+    <div class="result" aria-live="polite">
+      <div class="main">Estimated transfer time<span class="big" id="r-est">—</span></div>
+      <dl>
+        <dt>At 100% of line speed (theoretical)</dt><dd id="r-ideal">—</dd>
+        <dt>Effective throughput</dt><dd id="r-mbs">—</dd>
+        <dt>Total bytes</dt><dd id="r-bytes">—</dd>
+      </dl>
+      <div class="error" id="err" hidden></div>
+    </div>
+  </form>
+
+  <h2>How it works</h2>
+  <p>Internet and network speeds are quoted in megabits per second (Mbps). Files are measured in bytes. One byte is 8 bits, so 100 Mbps moves at most 12.5 megabytes per second.</p>
+  <div class="formula">seconds (theoretical) = size in bytes × 8 ÷ (Mbps × 1,000,000)
+seconds (estimated)   = theoretical ÷ efficiency%</div>
+  <p class="note">Real transfers are slower than the line speed because of protocol overhead, encryption, VPNs, other users on the connection and the speed of the disks at each end. Backup software that compresses or deduplicates can move less data than the full size.</p>
+
+  <h2>Examples</h2>
+  <h3>2 TB first offsite backup over 100 Mbps</h3>
+  <p>2 × 10¹² bytes × 8 = 1.6 × 10¹³ bits. ÷ 100,000,000 bits/s = 160,000 s = <strong>44.4 hours</strong> at full speed. At 80% efficiency it is about <strong>55.6 hours</strong>, or 2.3 days.</p>
+  <h3>500 GB server migration over 1 Gbps</h3>
+  <p>500 × 10⁹ × 8 = 4 × 10¹² bits. ÷ 1,000,000,000 = 4,000 s at full speed. At 70% efficiency: 4,000 ÷ 0.7 = 5,714 s, about <strong>1 hour 35 minutes</strong>.</p>
+
+  <h2>FAQ</h2>
+  <h3>What is the difference between Mbps and MB/s?</h3>
+  <p>Mbps is megabits per second; MB/s is megabytes per second. Divide Mbps by 8 to get MB/s. A 1 Gbps link carries at most 125 MB/s.</p>
+  <h3>Why does my 2 TB drive show about 1.8 TB in Windows?</h3>
+  <p>The drive holds 2 × 10¹² bytes. Windows divides by 1,024⁴ and shows about 1.82, still labelled "TB". Choose TiB above if you copied the size from Windows.</p>
+  <h3>Should I seed the first backup by shipping a drive?</h3>
+  <p>If the estimate is several days and your connection is shared with daily work, many backup products let you copy the first full backup to a disk and ship it, then send only daily changes over the internet.</p>
+
+  <section class="related">
+    <h2>Related calculators</h2>
+    <ul class="card-list">
+      <li><a href="../backup-storage-calculator/"><strong>Backup Storage Calculator</strong><span>How much space the backup will take once it arrives.</span></a></li>
+      <li><a href="../raid-capacity-calculator/"><strong>RAID Capacity Calculator</strong><span>Usable space on the destination server.</span></a></li>
+      <li><a href="../microsoft-365-license-calculator/"><strong>Microsoft 365 License Cost Calculator</strong><span>Moving mail and files to Microsoft 365? Estimate the license cost.</span></a></li>
+    </ul>
+  </section>
+
+  <aside class="rec">
+    <p class="rec-title">Planning a server migration or offsite backup in NJ / NY?</p>
+    <p>IPingSystem provides managed IT, backup and recovery services for small and medium businesses. <a href="https://www.ipingsystem.com/#contact" rel="noopener" data-rec="transfer">Contact IPingSystem</a></p>
+    <p class="rec-disc">Disclosure: The owner of this site also owns IPingSystem. This calculator is not an IPingSystem service.</p>
+  </aside>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <p>This site is operated personally by Steve Kim.</p>
+  <p>For estimation only. Not tax, legal or financial advice. Formula last reviewed: October 23, 2026.</p>
+  <p><a href="../../about/">About</a> · <a href="../../privacy/">Privacy</a></p>
+</div></footer>
+
+<script src="../../assets/common.js"></script>
+<script src="../../js/calc.js"></script>
+<script>
+UI.bind('f', function () {
+  var err = document.getElementById('err');
+  try {
+    var mult = document.getElementById('sunit').value === 'Gbps' ? 1000 : 1;
+    var r = Calc.transferTime({ size: UI.num('size'), unit: document.getElementById('unit').value, mbps: UI.num('speed') * mult, efficiencyPct: UI.num('eff') });
+    err.hidden = true;
+    UI.setText('r-est', UI.duration(r.estimatedSeconds));
+    UI.setText('r-ideal', UI.duration(r.idealSeconds) + ' (' + UI.fmt(r.idealSeconds / 3600, 1) + ' h)');
+    UI.setText('r-mbs', UI.fmt(r.mbPerSec, 1) + ' MB/s');
+    UI.setText('r-bytes', r.bytes.toExponential(3).replace('e+', ' × 10^'));
+  } catch (e) {
+    err.textContent = e.message; err.hidden = false;
+    ['r-est', 'r-ideal', 'r-mbs', 'r-bytes'].forEach(function (id) { UI.setText(id, '—'); });
+  }
+});
+</script>
+</body>
+</html>

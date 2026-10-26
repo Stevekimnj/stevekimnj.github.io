@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UPS Runtime Calculator | Business &amp; IT Calculators</title>
+<meta name="description" content="Estimate how long a UPS battery will run your server or network equipment. Uses battery voltage, Ah, load in watts and Peukert's law for a realistic estimate.">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header class="site-head"><div class="wrap">
+  <a class="site-name" href="../../">Business &amp; IT Calculators</a>
+  <nav><a href="../../">Home</a><a href="../../about/">About</a></nav>
+</div></header>
+
+<main class="wrap">
+  <p class="crumb">IT planning</p>
+  <h1>UPS Runtime Calculator</h1>
+  <p class="lede">Get a rough idea of how many minutes a UPS can keep your equipment running during a power cut.</p>
+
+  <form class="calc" id="f" novalidate>
+    <div class="fields">
+      <div class="field"><label for="volts">Battery voltage (each)</label><input id="volts" inputmode="decimal" value="12"><span class="hint">Usually 12 V for small UPS batteries</span></div>
+      <div class="field"><label for="ah">Battery capacity (Ah, each)</label><input id="ah" inputmode="decimal" value="9"><span class="hint">Printed on the battery, e.g. 9Ah</span></div>
+      <div class="field"><label for="count">Number of batteries</label><input id="count" inputmode="numeric" value="2"><span class="hint">Assumes they are wired in series</span></div>
+      <div class="field"><label for="load">Load (watts)</label><input id="load" inputmode="decimal" value="300"><span class="hint">Shown on most UPS displays or software</span></div>
+      <div class="field"><label for="eff">Inverter efficiency (%)</label><input id="eff" inputmode="decimal" value="90"></div>
+      <div class="field"><label for="chem">Battery type</label>
+        <select id="chem"><option value="1.2" selected>Lead-acid / VRLA (Peukert 1.2)</option><option value="1.05">Lithium-ion (Peukert 1.05)</option><option value="1">Ideal (no Peukert effect)</option></select>
+        <span class="hint">Typical values; check your battery's datasheet</span></div>
+    </div>
+    <div class="result" aria-live="polite">
+      <div class="main">Estimated runtime<span class="big" id="r-est">—</span></div>
+      <dl>
+        <dt>Energy-only upper limit</dt><dd id="r-ideal">—</dd>
+        <dt>Battery bank energy</dt><dd id="r-wh">—</dd>
+        <dt>Current from battery</dt><dd id="r-amps">—</dd>
+      </dl>
+      <div class="error" id="err" hidden></div>
+    </div>
+  </form>
+  <p class="note">This is an estimate. Battery age, temperature and the UPS's own cut-off voltage all reduce runtime. For a firm number, use the runtime chart for your exact UPS model from the manufacturer.</p>
+
+  <h2>How it works</h2>
+  <p>The upper limit divides the stored energy by the load. Lead-acid batteries deliver less of their rated capacity when drained quickly, so the estimate applies Peukert's law, using the battery's 20-hour rating.</p>
+  <div class="formula">energy (Wh)       = volts × batteries × Ah
+upper limit (h)   = Wh × efficiency ÷ load
+current (A)       = load ÷ (volts × batteries × efficiency)
+estimate (h)      = 20 × (Ah ÷ (current × 20)) ^ Peukert</div>
+
+  <h2>Examples</h2>
+  <h3>Small rack UPS, 2 × 12 V 9 Ah, 300 W load</h3>
+  <p>Energy = 24 V × 9 Ah = 216 Wh. Upper limit = 216 × 0.9 ÷ 300 = 0.648 h = 38.9 min. Current = 300 ÷ (24 × 0.9) = 13.9 A. With Peukert 1.2 the estimate is about <strong>19.6 minutes</strong>.</p>
+  <h3>Same UPS, 150 W load</h3>
+  <p>Halving the load more than doubles the runtime with lead-acid batteries, because they are drained more gently. Try it above: the estimate rises to roughly 45 minutes.</p>
+
+  <h2>FAQ</h2>
+  <h3>VA or watts?</h3>
+  <p>UPS units are rated in both. Use watts here. Keep the load below the UPS's watt rating; around 50–80% leaves headroom.</p>
+  <h3>How much runtime do I need?</h3>
+  <p>Enough to shut servers down cleanly, or to bridge the gap until a generator starts. For many small offices, 10–15 minutes plus automatic shutdown software is the practical goal.</p>
+  <h3>When should UPS batteries be replaced?</h3>
+  <p>Lead-acid UPS batteries often last 3–5 years, less in warm rooms. Many UPS units run a self-test and warn when the battery is weak.</p>
+
+  <section class="related">
+    <h2>Related calculators</h2>
+    <ul class="card-list">
+      <li><a href="../raid-capacity-calculator/"><strong>RAID Capacity Calculator</strong><span>Plan the server storage the UPS protects.</span></a></li>
+      <li><a href="../backup-storage-calculator/"><strong>Backup Storage Calculator</strong><span>Size the backup repository.</span></a></li>
+      <li><a href="../data-transfer-time-calculator/"><strong>Data Transfer Time Calculator</strong><span>Plan offsite backup uploads.</span></a></li>
+    </ul>
+  </section>
+
+  <aside class="rec">
+    <p class="rec-title">Need help with server room power and uptime in NJ / NY?</p>
+    <p>IPingSystem provides managed IT, server and network services for small and medium businesses. <a href="https://www.ipingsystem.com/#contact" rel="noopener" data-rec="ups">Contact IPingSystem</a></p>
+    <p class="rec-disc">Disclosure: The owner of this site also owns IPingSystem. This calculator is not an IPingSystem service.</p>
+  </aside>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <p>This site is operated personally by Steve Kim.</p>
+  <p>For estimation only. Not tax, legal or financial advice. Formula last reviewed: October 23, 2026.</p>
+  <p><a href="../../about/">About</a> · <a href="../../privacy/">Privacy</a></p>
+</div></footer>
+
+<script src="../../assets/common.js"></script>
+<script src="../../js/calc.js"></script>
+<script>
+UI.bind('f', function () {
+  var err = document.getElementById('err');
+  try {
+    var r = Calc.upsRuntime({ volts: UI.num('volts'), ah: UI.num('ah'), count: UI.num('count'), loadW: UI.num('load'), efficiencyPct: UI.num('eff'), peukert: Number(document.getElementById('chem').value), ratedHours: 20 });
+    err.hidden = true;
+    UI.setText('r-est', UI.duration(r.estimatedMinutes * 60));
+    UI.setText('r-ideal', UI.duration(r.idealMinutes * 60));
+    UI.setText('r-wh', UI.fmt(r.wh, 0) + ' Wh');
+    UI.setText('r-amps', UI.fmt(r.amps, 1) + ' A');
+  } catch (e) {
+    err.textContent = e.message; err.hidden = false;
+    ['r-est', 'r-ideal', 'r-wh', 'r-amps'].forEach(function (id) { UI.setText(id, '—'); });
+  }
+});
+</script>
+</body>
+</html>

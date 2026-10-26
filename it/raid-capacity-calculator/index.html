@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RAID Capacity Calculator (RAID 0, 1, 5, 6, 10) | Business &amp; IT Calculators</title>
+<meta name="description" content="Calculate usable storage and how many drive failures RAID 0, 1, 5, 6 and 10 can survive. Shows TB and TiB. Free, runs in your browser.">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header class="site-head"><div class="wrap">
+  <a class="site-name" href="../../">Business &amp; IT Calculators</a>
+  <nav><a href="../../">Home</a><a href="../../about/">About</a></nav>
+</div></header>
+
+<main class="wrap">
+  <p class="crumb">IT planning</p>
+  <h1>RAID Capacity Calculator</h1>
+  <p class="lede">See how much usable space a disk array gives you and how many drives can fail before you lose data.</p>
+
+  <form class="calc" id="f" novalidate>
+    <div class="fields">
+      <div class="field"><label for="level">RAID level</label>
+        <select id="level"><option value="0">RAID 0 (striping)</option><option value="1">RAID 1 (mirror)</option><option value="5">RAID 5 (single parity)</option><option value="6" selected>RAID 6 (double parity)</option><option value="10">RAID 10 (mirrored stripes)</option></select></div>
+      <div class="field"><label for="drives">Number of drives</label><input id="drives" inputmode="numeric" value="6"></div>
+      <div class="field"><label for="size">Size of each drive (TB)</label><input id="size" inputmode="decimal" value="8"><span class="hint">As printed on the drive label</span></div>
+    </div>
+    <div class="result" aria-live="polite">
+      <div class="main">Usable capacity<span class="big" id="r-usable">—</span></div>
+      <dl>
+        <dt>Same in TiB (as Windows shows it)</dt><dd id="r-tib">—</dd>
+        <dt>Raw capacity</dt><dd id="r-raw">—</dd>
+        <dt>Space efficiency</dt><dd id="r-eff">—</dd>
+        <dt>Drive failures survived (guaranteed)</dt><dd id="r-tol">—</dd>
+      </dl>
+      <div class="error" id="err" hidden></div>
+    </div>
+  </form>
+  <p class="note"><strong>RAID is not a backup.</strong> It keeps the server running through a disk failure, but deletions, corruption and ransomware are copied to every disk instantly. Keep separate backups.</p>
+
+  <h2>How it works</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Level</th><th>Usable capacity</th><th>Minimum drives</th><th class="num">Failures survived</th></tr></thead>
+    <tbody>
+      <tr><td>RAID 0</td><td>N × size</td><td>2</td><td class="num">0</td></tr>
+      <tr><td>RAID 1</td><td>1 × size</td><td>2</td><td class="num">N − 1</td></tr>
+      <tr><td>RAID 5</td><td>(N − 1) × size</td><td>3</td><td class="num">1</td></tr>
+      <tr><td>RAID 6</td><td>(N − 2) × size</td><td>4</td><td class="num">2</td></tr>
+      <tr><td>RAID 10</td><td>N ÷ 2 × size</td><td>4 (even)</td><td class="num">1 guaranteed</td></tr>
+    </tbody>
+  </table></div>
+  <p>N is the number of drives; all drives are assumed to be the same size. RAID 10 survives one failure for certain, and more only if each failed drive is in a different mirror pair.</p>
+
+  <h2>Examples</h2>
+  <h3>6 × 8 TB in RAID 6</h3>
+  <p>(6 − 2) × 8 = <strong>32 TB</strong> usable (about 29.1 TiB in Windows). Any 2 drives can fail. Efficiency 32 ÷ 48 = 67%.</p>
+  <h3>4 × 4 TB in RAID 10</h3>
+  <p>4 ÷ 2 × 4 = <strong>8 TB</strong> usable. Efficiency 50%. Survives 1 failure for certain, 2 if they are in different mirror pairs.</p>
+
+  <h2>FAQ</h2>
+  <h3>RAID 5 or RAID 6 for large drives?</h3>
+  <p>With large drives, rebuilding after a failure can take a day or more. During that time RAID 5 has no protection left. Many admins choose RAID 6 or RAID 10 for drives of several TB.</p>
+  <h3>Why is usable space in Windows lower than this result?</h3>
+  <p>Windows shows sizes in TiB, and the file system and controller reserve a little space. Use the TiB figure for a closer match.</p>
+  <h3>Can I mix drive sizes?</h3>
+  <p>Most controllers treat every drive as the size of the smallest one. Enter the smallest drive size to be safe.</p>
+
+  <section class="related">
+    <h2>Related calculators</h2>
+    <ul class="card-list">
+      <li><a href="../backup-storage-calculator/"><strong>Backup Storage Calculator</strong><span>How much space your backups need.</span></a></li>
+      <li><a href="../ups-runtime-calculator/"><strong>UPS Runtime Calculator</strong><span>Protect the array from sudden power loss.</span></a></li>
+      <li><a href="../data-transfer-time-calculator/"><strong>Data Transfer Time Calculator</strong><span>How long it takes to fill or move the array.</span></a></li>
+    </ul>
+  </section>
+
+  <aside class="rec">
+    <p class="rec-title">Planning server storage in NJ / NY?</p>
+    <p>IPingSystem provides managed IT, server and backup services for small and medium businesses. <a href="https://www.ipingsystem.com/#contact" rel="noopener" data-rec="raid">Contact IPingSystem</a></p>
+    <p class="rec-disc">Disclosure: The owner of this site also owns IPingSystem. This calculator is not an IPingSystem service.</p>
+  </aside>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <p>This site is operated personally by Steve Kim.</p>
+  <p>For estimation only. Not tax, legal or financial advice. Formula last reviewed: October 23, 2026.</p>
+  <p><a href="../../about/">About</a> · <a href="../../privacy/">Privacy</a></p>
+</div></footer>
+
+<script src="../../assets/common.js"></script>
+<script src="../../js/calc.js"></script>
+<script>
+UI.bind('f', function () {
+  var err = document.getElementById('err');
+  try {
+    var r = Calc.raid({ drives: UI.num('drives'), driveTB: UI.num('size'), level: document.getElementById('level').value });
+    err.hidden = true;
+    UI.setText('r-usable', UI.fmt(r.usable, 2) + ' TB');
+    UI.setText('r-tib', UI.fmt(r.usableTiB, 2) + ' TiB');
+    UI.setText('r-raw', UI.fmt(r.raw, 2) + ' TB');
+    UI.setText('r-eff', UI.fmt(r.efficiency * 100, 0) + '%');
+    UI.setText('r-tol', r.bestCaseTolerate > r.tolerate ? r.tolerate + ' (up to ' + r.bestCaseTolerate + ' if in different pairs)' : String(r.tolerate));
+  } catch (e) {
+    err.textContent = e.message; err.hidden = false;
+    ['r-usable', 'r-tib', 'r-raw', 'r-eff', 'r-tol'].forEach(function (id) { UI.setText(id, '—'); });
+  }
+});
+</script>
+</body>
+</html>

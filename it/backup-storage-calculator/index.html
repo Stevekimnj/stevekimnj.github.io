@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Backup Storage Calculator | Business &amp; IT Calculators</title>
+<meta name="description" content="Estimate how much backup storage you need from data size, daily change rate, number of restore points and compression. Free, runs in your browser.">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header class="site-head"><div class="wrap">
+  <a class="site-name" href="../../">Business &amp; IT Calculators</a>
+  <nav><a href="../../">Home</a><a href="../../about/">About</a></nav>
+</div></header>
+
+<main class="wrap">
+  <p class="crumb">IT planning</p>
+  <h1>Backup Storage Calculator</h1>
+  <p class="lede">Estimate the disk space a backup repository needs: one full copy of your data plus the daily changes you keep as restore points.</p>
+
+  <form class="calc" id="f" novalidate>
+    <div class="fields">
+      <div class="field"><label for="data">Data to protect (TB)</label><input id="data" inputmode="decimal" value="8"><span class="hint">Total size of the servers or files you back up</span></div>
+      <div class="field"><label for="change">Daily change (%)</label><input id="change" inputmode="decimal" value="3"><span class="hint">Share of data that changes each day. 2–5% is common</span></div>
+      <div class="field"><label for="retention">Restore points kept</label><input id="retention" inputmode="numeric" value="30"><span class="hint">Number of daily versions you can restore</span></div>
+      <div class="field"><label for="ratio">Compression / dedup ratio</label><input id="ratio" inputmode="decimal" value="1.5"><span class="hint">1.5 means data shrinks to 1/1.5. Use 1 for none</span></div>
+      <div class="field"><label for="buffer">Growth buffer (%)</label><input id="buffer" inputmode="decimal" value="20"><span class="hint">Headroom for data growth</span></div>
+    </div>
+    <div class="result" aria-live="polite">
+      <div class="main">Estimated backup storage<span class="big" id="r-total">—</span></div>
+      <dl>
+        <dt>Full copy (compressed)</dt><dd id="r-full">—</dd>
+        <dt>Daily changes kept</dt><dd id="r-inc">—</dd>
+        <dt>Before buffer</dt><dd id="r-sub">—</dd>
+        <dt>Same total in TiB (as Windows shows it)</dt><dd id="r-tib">—</dd>
+      </dl>
+      <div class="error" id="err" hidden></div>
+    </div>
+  </form>
+
+  <h2>How it works</h2>
+  <p>A typical backup keeps one full copy and then saves only what changed each day. The full copy and every daily change are shrunk by compression and deduplication. A buffer is added so the repository does not fill up as data grows.</p>
+  <div class="formula">full         = data ÷ ratio
+daily changes = data × change% × (restore points − 1) ÷ ratio
+total        = (full + daily changes) × (1 + buffer%)</div>
+  <p class="note">This is a planning estimate. Backup products differ: some make periodic new full copies, some deduplicate across machines. If you also keep an offsite copy with the same retention, plan roughly the same space again at the offsite location.</p>
+
+  <h2>Examples</h2>
+  <h3>8 TB file and database servers</h3>
+  <p>8 TB of data, 3% daily change, 30 restore points, 1.5 ratio, 20% buffer. Full copy = 8 ÷ 1.5 = 5.33 TB. Daily changes = 8 × 0.03 × 29 ÷ 1.5 = 4.64 TB. Total = (5.33 + 4.64) × 1.2 = <strong>11.97 TB</strong>.</p>
+  <h3>2 TB small office</h3>
+  <p>2 TB of data, 5% daily change, 14 restore points, 2:1 ratio, 25% buffer. Full copy = 1 TB. Daily changes = 2 × 0.05 × 13 ÷ 2 = 0.65 TB. Total = 1.65 × 1.25 = <strong>2.06 TB</strong>.</p>
+
+  <h2>FAQ</h2>
+  <h3>How do I find my daily change rate?</h3>
+  <p>Look at the size of recent incremental backups in your backup software and divide by the total data size. File servers often change less than 3% a day; busy databases and mail servers change more.</p>
+  <h3>Why is my disk smaller than the TB on the box?</h3>
+  <p>Drive makers count 1 TB as 1,000,000,000,000 bytes. Windows counts in TiB (1,099,511,627,776 bytes) but labels it "TB". That is why the TiB figure above is lower.</p>
+  <h3>Is RAID a backup?</h3>
+  <p>No. RAID keeps a server running when a disk fails, but it copies mistakes, deletions and ransomware instantly. You still need separate backups, ideally including one offsite.</p>
+
+  <section class="related">
+    <h2>Related calculators</h2>
+    <ul class="card-list">
+      <li><a href="../data-transfer-time-calculator/"><strong>Data Transfer Time Calculator</strong><span>How long the first full backup takes to reach an offsite location.</span></a></li>
+      <li><a href="../raid-capacity-calculator/"><strong>RAID Capacity Calculator</strong><span>Usable space for the backup server's disk array.</span></a></li>
+      <li><a href="../ups-runtime-calculator/"><strong>UPS Runtime Calculator</strong><span>Keep the backup server running through a power cut.</span></a></li>
+    </ul>
+  </section>
+
+  <aside class="rec">
+    <p class="rec-title">Need help planning backup and recovery in NJ / NY?</p>
+    <p>IPingSystem provides managed IT, backup and recovery services for small and medium businesses. <a href="https://www.ipingsystem.com/#contact" rel="noopener" data-rec="backup">Contact IPingSystem</a></p>
+    <p class="rec-disc">Disclosure: The owner of this site also owns IPingSystem. This calculator is not an IPingSystem service.</p>
+  </aside>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <p>This site is operated personally by Steve Kim.</p>
+  <p>For estimation only. Not tax, legal or financial advice. Formula last reviewed: October 23, 2026.</p>
+  <p><a href="../../about/">About</a> · <a href="../../privacy/">Privacy</a></p>
+</div></footer>
+
+<script src="../../assets/common.js"></script>
+<script src="../../js/calc.js"></script>
+<script>
+UI.bind('f', function () {
+  var err = document.getElementById('err');
+  try {
+    var r = Calc.backupStorage({ dataTB: UI.num('data'), changePct: UI.num('change'), retention: UI.num('retention'), ratio: UI.num('ratio'), bufferPct: UI.num('buffer') });
+    err.hidden = true;
+    UI.setText('r-total', UI.fmt(r.total, 2) + ' TB');
+    UI.setText('r-full', UI.fmt(r.full, 2) + ' TB');
+    UI.setText('r-inc', UI.fmt(r.incrementals, 2) + ' TB');
+    UI.setText('r-sub', UI.fmt(r.subtotal, 2) + ' TB');
+    UI.setText('r-tib', UI.fmt(r.totalTiB, 2) + ' TiB');
+  } catch (e) {
+    err.textContent = e.message; err.hidden = false;
+    ['r-total', 'r-full', 'r-inc', 'r-sub', 'r-tib'].forEach(function (id) { UI.setText(id, '—'); });
+  }
+});
+</script>
+</body>
+</html>

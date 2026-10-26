@@ -1,0 +1,21 @@
+[
+  { "id": "m365_business_basic", "value": 7.00, "unit": "USD per user per month, paid yearly", "source_url": "https://www.microsoft.com/en-us/microsoft-365/business/microsoft-365-plans-and-pricing", "last_verified": "2026-10-23", "note": "Read from the Microsoft plans and pricing page in a browser." },
+  { "id": "m365_business_standard_with_copilot", "value": 23.50, "unit": "USD per user per month, paid yearly", "source_url": "https://www.microsoft.com/en-us/microsoft-365/business/microsoft-365-plans-and-pricing", "last_verified": "2026-10-23", "note": "Usage-based billing for select advanced AI features not included." },
+  { "id": "m365_business_premium_with_copilot", "value": 32.00, "unit": "USD per user per month, paid yearly", "source_url": "https://www.microsoft.com/en-us/microsoft-365/business/microsoft-365-plans-and-pricing", "last_verified": "2026-10-23", "note": "Usage-based billing for select advanced AI features not included." },
+
+  { "id": "ss_rate_employer", "value": 6.2, "unit": "percent of wages up to the wage base", "source_url": "https://www.ssa.gov/oact/progdata/taxRates.html", "last_verified": "2026-10-23", "note": "OASDI rate for employers, 1990 and later." },
+  { "id": "medicare_rate_employer", "value": 1.45, "unit": "percent of all wages", "source_url": "https://www.ssa.gov/oact/progdata/taxRates.html", "last_verified": "2026-10-23", "note": "HI rate for employers. The additional 0.9% Medicare tax is employee-only." },
+  { "id": "ss_wage_base_2026", "value": 184500, "unit": "USD", "source_url": "https://www.ssa.gov/oact/cola/cbb.html", "last_verified": "2026-10-23", "note": "Contribution and benefit base for 2026." },
+  { "id": "ss_wage_base_2027", "value": 192300, "unit": "USD", "source_url": "https://www.ssa.gov/oact/cola/cbb.html", "last_verified": "2026-10-23", "note": "Contribution and benefit base for 2027 as listed by SSA." },
+  { "id": "futa_rate_after_credit", "value": 0.6, "unit": "percent", "source_url": "https://www.irs.gov/taxtopics/tc759", "last_verified": "2026-10-23", "note": "6.0% gross minus up to 5.4% state credit. Higher in credit reduction states." },
+  { "id": "futa_rate_gross", "value": 6.0, "unit": "percent", "source_url": "https://www.irs.gov/taxtopics/tc759", "last_verified": "2026-10-23", "note": "" },
+  { "id": "futa_wage_base", "value": 7000, "unit": "USD per employee per year", "source_url": "https://www.irs.gov/taxtopics/tc759", "last_verified": "2026-10-23", "note": "" },
+
+  { "id": "nj_sales_tax", "value": 6.625, "unit": "percent", "source_url": "https://www.nj.gov/treasury/taxation/salestax.shtml", "last_verified": "2026-10-23", "note": "Single statewide rate since January 1, 2018 (page last updated 04/30/25)." },
+  { "id": "nyc_sales_tax", "value": 8.875, "unit": "percent", "source_url": "https://www.nyc.gov/site/finance/business/business-nys-sales-tax.page", "last_verified": "2026-10-23", "note": "4.5% city + 4% state + 0.375% MCTD, per NYC Department of Finance." },
+
+  { "id": "mpf_rate", "value": 0.3464, "unit": "percent ad valorem, formal entries", "source_url": "https://www.cbp.gov/trade/basic-import-export/user-fee-table", "last_verified": "2026-10-23", "note": "CBP page last modified Oct 09, 2026. Rates adjust each fiscal year." },
+  { "id": "mpf_min", "value": 34.58, "unit": "USD per formal entry", "source_url": "https://www.cbp.gov/trade/basic-import-export/user-fee-table", "last_verified": "2026-10-23", "note": "" },
+  { "id": "mpf_max", "value": 670.86, "unit": "USD per formal entry", "source_url": "https://www.cbp.gov/trade/basic-import-export/user-fee-table", "last_verified": "2026-10-23", "note": "" },
+  { "id": "hmf_rate", "value": 0.125, "unit": "percent ad valorem, imports by vessel", "source_url": "https://www.cbp.gov/trade/basic-import-export/user-fee-table", "last_verified": "2026-10-23", "note": "" }
+]

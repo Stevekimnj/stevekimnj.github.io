@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Microsoft 365 License Cost Calculator | Business &amp; IT Calculators</title>
+<meta name="description" content="Estimate monthly and yearly Microsoft 365 business license cost for a mix of plans. Prices from Microsoft's U.S. pricing page with the date checked; you can edit them.">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header class="site-head"><div class="wrap">
+  <a class="site-name" href="../../">Business &amp; IT Calculators</a>
+  <nav><a href="../../">Home</a><a href="../../about/">About</a></nav>
+</div></header>
+
+<main class="wrap">
+  <p class="crumb">IT planning</p>
+  <h1>Microsoft 365 License Cost Calculator</h1>
+  <p class="lede">Add up the monthly and yearly cost of Microsoft 365 business licenses for your team. Prices are pre-filled from Microsoft's U.S. list prices; change them if you pay a different rate.</p>
+
+  <form class="calc" id="f" novalidate>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Plan</th><th class="num">Users</th><th class="num">$ / user / mo</th><th class="num">Monthly</th></tr></thead>
+      <tbody>
+        <tr><td><label for="u1">Business Basic</label></td><td class="num"><input id="u1" inputmode="numeric" value="10" aria-label="Business Basic users"></td><td class="num"><input class="price" id="p1" inputmode="decimal" value="7.00" aria-label="Business Basic price"></td><td class="num" id="m1">—</td></tr>
+        <tr><td><label for="u2">Business Standard with Copilot</label></td><td class="num"><input id="u2" inputmode="numeric" value="0" aria-label="Business Standard with Copilot users"></td><td class="num"><input class="price" id="p2" inputmode="decimal" value="23.50" aria-label="Business Standard with Copilot price"></td><td class="num" id="m2">—</td></tr>
+        <tr><td><label for="u3">Business Premium with Copilot</label></td><td class="num"><input id="u3" inputmode="numeric" value="5" aria-label="Business Premium with Copilot users"></td><td class="num"><input class="price" id="p3" inputmode="decimal" value="32.00" aria-label="Business Premium with Copilot price"></td><td class="num" id="m3">—</td></tr>
+        <tr><td><label for="u4">Other plan (enter price)</label></td><td class="num"><input id="u4" inputmode="numeric" value="0" aria-label="Other plan users"></td><td class="num"><input class="price" id="p4" inputmode="decimal" value="0" aria-label="Other plan price"></td><td class="num" id="m4">—</td></tr>
+      </tbody>
+    </table></div>
+    <div class="result" aria-live="polite">
+      <div class="main">Estimated cost per month<span class="big" id="r-month">—</span></div>
+      <dl>
+        <dt>Per year</dt><dd id="r-year">—</dd>
+        <dt>Total users</dt><dd id="r-users">—</dd>
+        <dt>Average per user per month</dt><dd id="r-avg">—</dd>
+      </dl>
+      <div class="error" id="err" hidden></div>
+    </div>
+  </form>
+  <p class="note">Default prices: Microsoft 365 plans and pricing page (U.S.), "user/month, paid yearly", annual subscription, before tax. Checked October 23, 2026. Microsoft lists usage-based billing for some advanced AI features on the "with Copilot" plans; that is not included here. Prices change and partners may quote differently, so confirm before you buy.</p>
+
+  <h2>How it works</h2>
+  <div class="formula">monthly = Σ (users × price per user per month)
+yearly  = monthly × 12</div>
+
+  <h2>Examples</h2>
+  <h3>Office of 15: 10 Basic + 5 Premium with Copilot</h3>
+  <p>10 × $7.00 + 5 × $32.00 = $70 + $160 = <strong>$230.00 a month</strong>, or $2,760 a year.</p>
+  <h3>Team of 12 on Standard with Copilot</h3>
+  <p>12 × $23.50 = <strong>$282.00 a month</strong>, or $3,384 a year.</p>
+
+  <h2>FAQ</h2>
+  <h3>Do all users need the same plan?</h3>
+  <p>No. Microsoft 365 business plans can be mixed in one company, for example Basic for staff who only need email and web apps, and a higher plan for those who need desktop apps or extra security.</p>
+  <h3>Is there a user limit on business plans?</h3>
+  <p>Microsoft's business plans are designed for smaller organizations and have a maximum number of users per plan. Check the current limit on Microsoft's site; larger organizations use enterprise plans.</p>
+  <h3>Does the price include tax?</h3>
+  <p>No. Sales tax depends on your state and is added at checkout.</p>
+
+  <section class="related">
+    <h2>Related calculators</h2>
+    <ul class="card-list">
+      <li><a href="../data-transfer-time-calculator/"><strong>Data Transfer Time Calculator</strong><span>How long it takes to move mailboxes and files.</span></a></li>
+      <li><a href="../backup-storage-calculator/"><strong>Backup Storage Calculator</strong><span>Plan backups for data outside Microsoft 365.</span></a></li>
+      <li><a href="../raid-capacity-calculator/"><strong>RAID Capacity Calculator</strong><span>Size an on-premises file server.</span></a></li>
+    </ul>
+  </section>
+
+  <aside class="rec">
+    <p class="rec-title">Need help choosing or managing Microsoft 365 licenses in NJ / NY?</p>
+    <p>IPingSystem provides managed IT and Microsoft 365 management for small and medium businesses. <a href="https://www.ipingsystem.com/#contact" rel="noopener" data-rec="m365">Contact IPingSystem</a></p>
+    <p class="rec-disc">Disclosure: The owner of this site also owns IPingSystem. This calculator is not an IPingSystem service.</p>
+  </aside>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <p>This site is operated personally by Steve Kim.</p>
+  <p>For estimation only. Not tax, legal or financial advice. Prices last checked: October 23, 2026 (<a href="https://www.microsoft.com/en-us/microsoft-365/business/microsoft-365-plans-and-pricing" rel="noopener">Microsoft source</a>).</p>
+  <p><a href="../../about/">About</a> · <a href="../../privacy/">Privacy</a></p>
+</div></footer>
+
+<script src="../../assets/common.js"></script>
+<script src="../../js/calc.js"></script>
+<script>
+UI.bind('f', function () {
+  var err = document.getElementById('err');
+  try {
+    var rows = [1, 2, 3, 4].map(function (i) { return { users: UI.num('u' + i) || 0, price: UI.num('p' + i) || 0 }; });
+    var r = Calc.m365Cost(rows);
+    err.hidden = true;
+    rows.forEach(function (row, i) { UI.setText('m' + (i + 1), UI.money(row.users * row.price)); });
+    UI.setText('r-month', UI.money(r.monthly));
+    UI.setText('r-year', UI.money(r.yearly));
+    UI.setText('r-users', String(r.users));
+    UI.setText('r-avg', r.users ? UI.money(r.monthly / r.users) : '—');
+  } catch (e) {
+    err.textContent = e.message; err.hidden = false;
+    ['r-month', 'r-year', 'r-users', 'r-avg'].forEach(function (id) { UI.setText(id, '—'); });
+  }
+});
+</script>
+</body>
+</html>

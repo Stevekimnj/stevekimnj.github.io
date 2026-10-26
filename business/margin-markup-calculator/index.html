@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Margin vs Markup Calculator | Business &amp; IT Calculators</title>
+<meta name="description" content="Calculate selling price, profit, margin and markup from cost. See why a 30% margin is not a 30% markup. Free, runs in your browser.">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header class="site-head"><div class="wrap">
+  <a class="site-name" href="../../">Business &amp; IT Calculators</a>
+  <nav><a href="../../">Home</a><a href="../../about/">About</a></nav>
+</div></header>
+
+<main class="wrap">
+  <p class="crumb">Business</p>
+  <h1>Margin vs Markup Calculator</h1>
+  <p class="lede">Enter your cost and either a selling price, a target margin or a target markup. The calculator fills in the rest.</p>
+
+  <form class="calc" id="f" novalidate>
+    <div class="fields">
+      <div class="field"><label for="cost">Cost ($)</label><input id="cost" inputmode="decimal" value="1000"></div>
+      <div class="field"><label for="mode">I know the</label>
+        <select id="mode"><option value="margin" selected>Target margin (%)</option><option value="markup">Target markup (%)</option><option value="price">Selling price ($)</option></select></div>
+      <div class="field"><label for="val" id="val-label">Target margin (%)</label><input id="val" inputmode="decimal" value="30"></div>
+    </div>
+    <div class="result" aria-live="polite">
+      <div class="main">Selling price<span class="big" id="r-price">—</span></div>
+      <dl>
+        <dt>Profit</dt><dd id="r-profit">—</dd>
+        <dt>Margin (profit ÷ price)</dt><dd id="r-margin">—</dd>
+        <dt>Markup (profit ÷ cost)</dt><dd id="r-markup">—</dd>
+      </dl>
+      <div class="error" id="err" hidden></div>
+    </div>
+  </form>
+
+  <h2>How it works</h2>
+  <p>Margin and markup both describe the same profit, measured against different numbers. Margin compares profit with the selling price. Markup compares profit with the cost. Mixing them up is one of the most common quoting mistakes.</p>
+  <div class="formula">profit = price − cost
+margin = profit ÷ price
+markup = profit ÷ cost
+price from margin = cost ÷ (1 − margin)
+price from markup = cost × (1 + markup)</div>
+
+  <h2>Examples</h2>
+  <h3>$1,000 cost, 30% margin</h3>
+  <p>Price = 1,000 ÷ (1 − 0.30) = <strong>$1,428.57</strong>. Profit = $428.57. That is a 42.86% markup.</p>
+  <h3>$1,000 cost, 30% markup</h3>
+  <p>Price = 1,000 × 1.30 = <strong>$1,300.00</strong>. Profit = $300. That is only a 23.08% margin.</p>
+
+  <h2>FAQ</h2>
+  <h3>Which one should I quote with?</h3>
+  <p>Many businesses set prices with a target margin because it shows what share of every sales dollar is profit. Whichever you use, say which one it is so your team and suppliers read the number the same way.</p>
+  <h3>Can margin be 100% or more?</h3>
+  <p>No. Margin is a share of the price, so it is always below 100%. Markup has no upper limit.</p>
+  <h3>Should cost include shipping and fees?</h3>
+  <p>Yes, if you pay them. Use your landed cost: product price plus freight, duties and fees. The import landed cost calculator can help.</p>
+
+  <section class="related">
+    <h2>Related calculators</h2>
+    <ul class="card-list">
+      <li><a href="../import-landed-cost-calculator/"><strong>Import Landed Cost Calculator</strong><span>Work out your true cost before setting a margin.</span></a></li>
+      <li><a href="../nj-nyc-sales-tax-calculator/"><strong>NJ / NYC Sales Tax Calculator</strong><span>Add sales tax to your selling price.</span></a></li>
+      <li><a href="../us-employer-cost-calculator/"><strong>US Employer Cost Calculator</strong><span>The real cost of an employee on top of salary.</span></a></li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <p>This site is operated personally by Steve Kim.</p>
+  <p>For estimation only. Not tax, legal or financial advice. Formula last reviewed: October 23, 2026.</p>
+  <p><a href="../../about/">About</a> · <a href="../../privacy/">Privacy</a></p>
+</div></footer>
+
+<script src="../../assets/common.js"></script>
+<script src="../../js/calc.js"></script>
+<script>
+var labels = { margin: 'Target margin (%)', markup: 'Target markup (%)', price: 'Selling price ($)' };
+document.getElementById('mode').addEventListener('change', function () { document.getElementById('val-label').textContent = labels[this.value]; });
+UI.bind('f', function () {
+  var err = document.getElementById('err');
+  try {
+    var r = Calc.marginMarkup({ cost: UI.num('cost'), mode: document.getElementById('mode').value, value: UI.num('val') });
+    err.hidden = true;
+    UI.setText('r-price', UI.money(r.price));
+    UI.setText('r-profit', UI.money(r.profit));
+    UI.setText('r-margin', UI.fmt(r.marginPct, 2) + '%');
+    UI.setText('r-markup', UI.fmt(r.markupPct, 2) + '%');
+  } catch (e) {
+    err.textContent = e.message; err.hidden = false;
+    ['r-price', 'r-profit', 'r-margin', 'r-markup'].forEach(function (id) { UI.setText(id, '—'); });
+  }
+});
+</script>
+</body>
+</html>

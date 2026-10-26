@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NJ and NYC Sales Tax Calculator | Business &amp; IT Calculators</title>
+<meta name="description" content="Add or remove New Jersey (6.625%) or New York City (8.875%) sales tax. Rates from official state and city sources with the date checked.">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header class="site-head"><div class="wrap">
+  <a class="site-name" href="../../">Business &amp; IT Calculators</a>
+  <nav><a href="../../">Home</a><a href="../../about/">About</a></nav>
+</div></header>
+
+<main class="wrap">
+  <p class="crumb">Business</p>
+  <h1>NJ and NYC Sales Tax Calculator</h1>
+  <p class="lede">Add sales tax to a price, or find the tax inside a total you already paid. Uses the New Jersey statewide rate and the New York City combined rate.</p>
+
+  <form class="calc" id="f" novalidate>
+    <div class="fields">
+      <div class="field"><label for="where">Location</label>
+        <select id="where"><option value="nj" selected>New Jersey (statewide)</option><option value="nyc">New York City (all 5 boroughs)</option><option value="custom">Other rate</option></select></div>
+      <div class="field"><label for="rate">Sales tax rate (%)</label><input id="rate" inputmode="decimal" value=""><span class="hint" id="rate-hint"></span></div>
+      <div class="field"><label for="mode">Amount is</label>
+        <select id="mode"><option value="add" selected>Before tax (add tax)</option><option value="extract">Total including tax (remove tax)</option></select></div>
+      <div class="field"><label for="amount">Amount ($)</label><input id="amount" inputmode="decimal" value="1000"></div>
+    </div>
+    <div class="result" aria-live="polite">
+      <div class="main">Sales tax<span class="big" id="r-tax">—</span></div>
+      <dl>
+        <dt>Price before tax</dt><dd id="r-pre">—</dd>
+        <dt>Total with tax</dt><dd id="r-total">—</dd>
+      </dl>
+      <div class="error" id="err" hidden></div>
+    </div>
+  </form>
+
+  <h2>Current rates</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Location</th><th class="num">Rate</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>New Jersey (single statewide rate)</td><td class="num">6.625%</td><td><a href="https://www.nj.gov/treasury/taxation/salestax.shtml" rel="noopener">NJ Division of Taxation</a></td></tr>
+      <tr><td>New York City: 4% state + 4.5% city + 0.375% MCTD</td><td class="num">8.875%</td><td><a href="https://www.nyc.gov/site/finance/business/business-nys-sales-tax.page" rel="noopener">NYC Department of Finance</a></td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Rates last checked October 23, 2026. Some goods and services are exempt or taxed differently, and rates outside New York City vary by county. Check the official sources for your exact item and address.</p>
+
+  <h2>How it works</h2>
+  <div class="formula">add tax:    tax = price × rate        total = price + tax
+remove tax: price = total ÷ (1 + rate)   tax = total − price</div>
+
+  <h2>Examples</h2>
+  <h3>$1,000 laptop bought in Manhattan</h3>
+  <p>Tax = 1,000 × 0.08875 = $88.75. Total = <strong>$1,088.75</strong>.</p>
+  <h3>Receipt total $53.31 in New Jersey</h3>
+  <p>Price before tax = 53.31 ÷ 1.06625 = $50.00. Tax inside the total = <strong>$3.31</strong>.</p>
+
+  <h2>FAQ</h2>
+  <h3>Is sales tax the same as VAT?</h3>
+  <p>No. VAT is usually built into the shelf price and collected at each stage of the supply chain. U.S. sales tax is set by each state and local area, is normally added at the register, and is generally collected only on the final sale to the customer.</p>
+  <h3>Does New Jersey have local sales taxes?</h3>
+  <p>New Jersey uses a single statewide rate, according to the NJ Division of Taxation.</p>
+  <h3>What about New York State outside NYC?</h3>
+  <p>Counties and some cities add their own rate to the 4% state rate. Choose "Other rate" and enter the rate for that location from the New York State Department of Taxation and Finance.</p>
+
+  <section class="related">
+    <h2>Related calculators</h2>
+    <ul class="card-list">
+      <li><a href="../margin-markup-calculator/"><strong>Margin vs Markup Calculator</strong><span>Set the price before tax.</span></a></li>
+      <li><a href="../import-landed-cost-calculator/"><strong>Import Landed Cost Calculator</strong><span>Duties and fees on imported goods.</span></a></li>
+      <li><a href="../us-employer-cost-calculator/"><strong>US Employer Cost Calculator</strong><span>Payroll taxes for a new hire.</span></a></li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <p>This site is operated personally by Steve Kim.</p>
+  <p>For estimation only. Not tax, legal or financial advice. Rates last checked: October 23, 2026.</p>
+  <p><a href="../../about/">About</a> · <a href="../../privacy/">Privacy</a></p>
+</div></footer>
+
+<script src="../../assets/common.js"></script>
+<script src="../../js/rates.js"></script>
+<script src="../../js/calc.js"></script>
+<script>
+var whereEl = document.getElementById('where'), rateEl = document.getElementById('rate');
+function setRate() {
+  var w = whereEl.value;
+  if (w === 'nj') { rateEl.value = RATES.nj_sales_tax; rateEl.readOnly = true; UI.setText('rate-hint', 'NJ Division of Taxation, checked ' + RATES.checked); }
+  else if (w === 'nyc') { rateEl.value = RATES.nyc_sales_tax; rateEl.readOnly = true; UI.setText('rate-hint', 'NYC Department of Finance, checked ' + RATES.checked); }
+  else { rateEl.readOnly = false; UI.setText('rate-hint', 'Enter the rate for your location'); }
+}
+whereEl.addEventListener('change', setRate);
+setRate();
+UI.bind('f', function () {
+  var err = document.getElementById('err');
+  try {
+    var r = Calc.salesTax({ amount: UI.num('amount'), ratePct: UI.num('rate'), mode: document.getElementById('mode').value });
+    err.hidden = true;
+    UI.setText('r-tax', UI.money(r.tax));
+    UI.setText('r-pre', UI.money(r.preTax));
+    UI.setText('r-total', UI.money(r.total));
+  } catch (e) {
+    err.textContent = e.message; err.hidden = false;
+    ['r-tax', 'r-pre', 'r-total'].forEach(function (id) { UI.setText(id, '—'); });
+  }
+});
+</script>
+</body>
+</html>

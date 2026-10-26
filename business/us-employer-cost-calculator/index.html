@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>US Employer Cost Calculator: True Cost of an Employee | Business &amp; IT Calculators</title>
+<meta name="description" content="See what one U.S. employee really costs: salary plus employer Social Security, Medicare, FUTA and state unemployment tax. 2026 wage base from SSA.">
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header class="site-head"><div class="wrap">
+  <a class="site-name" href="../../">Business &amp; IT Calculators</a>
+  <nav><a href="../../">Home</a><a href="../../about/">About</a></nav>
+</div></header>
+
+<main class="wrap">
+  <p class="crumb">Business</p>
+  <h1>US Employer Cost Calculator</h1>
+  <p class="lede">Salary is not the whole cost of hiring in the U.S. The employer also pays Social Security, Medicare and unemployment taxes on top. This calculator adds them up for one employee for a year.</p>
+
+  <form class="calc" id="f" novalidate>
+    <div class="fields">
+      <div class="field"><label for="salary">Annual salary ($)</label><input id="salary" inputmode="decimal" value="60000"></div>
+      <div class="field"><label for="year">Tax year</label><select id="year"><option value="2026" selected>2026</option><option value="2027">2027</option></select><span class="hint" id="base-hint"></span></div>
+      <div class="field"><label for="futa">Federal unemployment (FUTA)</label>
+        <select id="futa"><option value="credit" selected>0.6% (full state credit)</option><option value="gross">6.0% (no state credit)</option></select>
+        <span class="hint">On the first $7,000 per employee</span></div>
+      <div class="field"><label for="suta">State unemployment rate (%)</label><input id="suta" inputmode="decimal" value="0"><span class="hint">From your NJ or NY Department of Labor rate notice</span></div>
+      <div class="field"><label for="sutabase">State unemployment wage base ($)</label><input id="sutabase" inputmode="decimal" value="0"><span class="hint">Wages per employee the state rate applies to</span></div>
+      <div class="field"><label for="other">Other yearly costs ($, optional)</label><input id="other" inputmode="decimal" value="0"><span class="hint">Health insurance, 401(k) match, other state payroll taxes</span></div>
+    </div>
+    <div class="result" aria-live="polite">
+      <div class="main">Total yearly cost to the employer<span class="big" id="r-total">—</span></div>
+      <dl>
+        <dt>Social Security (6.2%, up to the wage base)</dt><dd id="r-ss">—</dd>
+        <dt>Medicare (1.45%)</dt><dd id="r-med">—</dd>
+        <dt>FUTA</dt><dd id="r-futa">—</dd>
+        <dt>State unemployment</dt><dd id="r-suta">—</dd>
+        <dt>Other costs</dt><dd id="r-other">—</dd>
+        <dt>Cost above salary</dt><dd id="r-over">—</dd>
+      </dl>
+      <div class="error" id="err" hidden></div>
+    </div>
+  </form>
+  <p class="note">State unemployment rates differ for every employer and change each year, so enter your own from the state notice. New Jersey and New York employers may also owe other state payroll contributions; add them under "Other yearly costs" if they apply. Confirm with your payroll provider or accountant.</p>
+
+  <h2>Rates used</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Item</th><th class="num">Value</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr><td>Social Security, employer share</td><td class="num">6.2%</td><td><a href="https://www.ssa.gov/oact/progdata/taxRates.html" rel="noopener">SSA</a></td></tr>
+      <tr><td>Medicare, employer share</td><td class="num">1.45%</td><td><a href="https://www.ssa.gov/oact/progdata/taxRates.html" rel="noopener">SSA</a></td></tr>
+      <tr><td>Social Security wage base 2026</td><td class="num">$184,500</td><td><a href="https://www.ssa.gov/oact/cola/cbb.html" rel="noopener">SSA</a></td></tr>
+      <tr><td>Social Security wage base 2027</td><td class="num">$192,300</td><td><a href="https://www.ssa.gov/oact/cola/cbb.html" rel="noopener">SSA</a></td></tr>
+      <tr><td>FUTA: 6.0%, or 0.6% after the maximum 5.4% state credit, on the first $7,000</td><td class="num">0.6% / 6.0%</td><td><a href="https://www.irs.gov/taxtopics/tc759" rel="noopener">IRS Topic 759</a></td></tr>
+    </tbody>
+  </table></div>
+  <p>Checked October 23, 2026. Employers in a "credit reduction state" pay more FUTA than 0.6%; the U.S. Department of Labor publishes that list each year.</p>
+
+  <h2>How it works</h2>
+  <div class="formula">Social Security = 6.2% × min(salary, wage base)
+Medicare        = 1.45% × salary
+FUTA            = FUTA rate × min(salary, $7,000)
+State UI        = state rate × min(salary, state wage base)
+Total           = salary + all of the above + other costs</div>
+
+  <h2>Examples</h2>
+  <h3>$60,000 salary in 2026</h3>
+  <p>Social Security $3,720 + Medicare $870 + FUTA $42 = $4,632 in federal employer taxes. If your state notice said 3% on the first $20,000 (example only), state unemployment adds $600, for a total of <strong>$65,232</strong>.</p>
+  <h3>$200,000 salary in 2026</h3>
+  <p>Social Security stops at the $184,500 wage base: 6.2% × 184,500 = $11,439. Medicare has no cap: 1.45% × 200,000 = $2,900. Plus FUTA $42 and your state amount.</p>
+
+  <h2>FAQ</h2>
+  <h3>Is the employee's own 7.65% included?</h3>
+  <p>No. The employee's Social Security and Medicare are withheld from their pay. This calculator shows only what the employer pays on top of salary.</p>
+  <h3>What about the extra 0.9% Medicare tax on high earners?</h3>
+  <p>That additional tax is paid by the employee, not matched by the employer, so it does not change the employer's cost.</p>
+  <h3>Why does a Korean head office budget come out too low?</h3>
+  <p>Budgets often use salary only. In the U.S., employer payroll taxes, benefits such as health insurance, and payroll service fees are added on top, so plan for the total shown here plus benefits.</p>
+
+  <section class="related">
+    <h2>Related calculators</h2>
+    <ul class="card-list">
+      <li><a href="../margin-markup-calculator/"><strong>Margin vs Markup Calculator</strong><span>Price your services to cover labor cost.</span></a></li>
+      <li><a href="../nj-nyc-sales-tax-calculator/"><strong>NJ / NYC Sales Tax Calculator</strong><span>Add sales tax to a price.</span></a></li>
+      <li><a href="../import-landed-cost-calculator/"><strong>Import Landed Cost Calculator</strong><span>True cost of goods shipped to the U.S.</span></a></li>
+    </ul>
+  </section>
+</main>
+
+<footer class="site-foot"><div class="wrap">
+  <p>This site is operated personally by Steve Kim.</p>
+  <p>For estimation only. Not tax, legal or financial advice. Rates last checked: October 23, 2026.</p>
+  <p><a href="../../about/">About</a> · <a href="../../privacy/">Privacy</a></p>
+</div></footer>
+
+<script src="../../assets/common.js"></script>
+<script src="../../js/rates.js"></script>
+<script src="../../js/calc.js"></script>
+<script>
+UI.bind('f', function () {
+  var err = document.getElementById('err');
+  try {
+    var year = document.getElementById('year').value;
+    var base = year === '2027' ? RATES.ss_wage_base_2027 : RATES.ss_wage_base_2026;
+    UI.setText('base-hint', 'Social Security wage base ' + year + ': ' + UI.money(base).replace('.00', ''));
+    var r = Calc.employerCost({
+      salary: UI.num('salary'), ssPct: RATES.ss_rate_employer, ssWageBase: base, medicarePct: RATES.medicare_rate_employer,
+      futaPct: document.getElementById('futa').value === 'gross' ? RATES.futa_rate_gross : RATES.futa_rate_after_credit, futaWageBase: RATES.futa_wage_base,
+      sutaPct: UI.num('suta') || 0, sutaWageBase: UI.num('sutabase') || 0, otherAnnual: UI.num('other') || 0
+    });
+    err.hidden = true;
+    UI.setText('r-total', UI.money(r.total));
+    UI.setText('r-ss', UI.money(r.ss));
+    UI.setText('r-med', UI.money(r.medicare));
+    UI.setText('r-futa', UI.money(r.futa));
+    UI.setText('r-suta', UI.money(r.suta));
+    UI.setText('r-other', UI.money(r.other));
+    UI.setText('r-over', UI.money(r.total - UI.num('salary')) + ' (' + UI.fmt(r.overPct, 1) + '%)');
+  } catch (e) {
+    err.textContent = e.message; err.hidden = false;
+    ['r-total', 'r-ss', 'r-med', 'r-futa', 'r-suta', 'r-other', 'r-over'].forEach(function (id) { UI.setText(id, '—'); });
+  }
+});
+</script>
+</body>
+</html>
